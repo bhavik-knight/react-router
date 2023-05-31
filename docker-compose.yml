@@ -1,0 +1,20 @@
+services:
+  frontend:
+    # give a name to the container
+    container_name: frontend-container
+
+    # give a name to the image
+    image: frontend-docker-image
+
+    # building from the react directory using Dockerfile.frontend
+    build:
+      context: ./react
+      dockerfile: dockerfile.frontend
+
+    # connect the local frontend directory to the docker's frontend directory
+    volumes:
+      - ./react/frontend:/home/ubuntu/frontend
+
+    # bind the ports
+    ports:
+      - 5000:5000

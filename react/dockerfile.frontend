@@ -1,0 +1,27 @@
+# base image - node19
+FROM node:19
+
+# create a directory inside docker
+RUN mkdir -p /home/ubuntu
+
+# move to this newly created directory
+WORKDIR /home/ubuntu
+
+# create a react project inside this directory and move to that directory
+RUN npm create vite frontend -- --template react
+WORKDIR /home/ubuntu/frontend
+
+# copy package.json from local directory to docker
+COPY ./frontend/package.json .
+
+# install everything that is needed for our project
+RUN npm install
+
+# copy rest of the stuff from local directory to docker
+COPY ./frontend .
+
+# export docker's port for the frontend
+EXPOSE 5000
+
+# run the server for the frontend - default for vite is 5173 - make sure to change that in local vite.config file
+CMD ["npm", "run", "dev"]
