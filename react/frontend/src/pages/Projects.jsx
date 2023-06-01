@@ -94,7 +94,7 @@ function Projects() {
       </div>
 
 
-
+      {/*
       <div>
         {data.map((p, index) => {
           return (
@@ -102,6 +102,8 @@ function Projects() {
           )
         })}
       </div>
+    */}
+
     </>
   )
 }
@@ -111,3 +113,7 @@ export { Projects };
 
 // reference: array creation - https://www.techiedelight.com/create-array-from-1-n-javascript/
 // reference: pagination button limits - https://stackoverflow.com/questions/65857993/how-to-limit-pagination-buttons-in-vue
+// reference: custom pagination in react - https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react/
+
+// reference: custom carousel tutorial for react - https://www.youtube.com/watch?v=SK9AlIbexOE
+// reference: advance carousel tutorial for react - https://www.youtube.com/watch?v=hUTwhn4BIyM
