@@ -1,6 +1,6 @@
 import axios from "axios";
 import { nanoid } from "nanoid";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Projects.css";
 
 function Projects() {
@@ -32,7 +32,7 @@ function Projects() {
   // to keep track of the carousel card
   const [currentProduct, setCurrentProduct] = useState(0)
   const numData = transformedData.length
-  console.log(`data #: ${numData}, ${currentProduct}`)
+  // console.log(`data #: ${numData}, ${currentProduct}`)
 
   function handlePrevClick() {
     currentProduct < 1 && setCurrentProduct(currentProduct => currentProduct + numData)
@@ -47,7 +47,11 @@ function Projects() {
     setCurrentProduct(index)
   }
 
-  function showButtons(active, siblings = 1) {
+  function showButtons(active, siblings = 2) {
+    if (numData < siblings * 2 + 1) {
+      return [...Array(numData).keys()]
+    }
+
     if (active < siblings) {
       active = siblings
     } else if (active >= numData - siblings) {
@@ -55,9 +59,21 @@ function Projects() {
     }
 
     let newArray = [...Array(siblings * 2 + 1).keys()].map(i => i - siblings + active)
-    console.log(currentProduct, active, newArray)
+    // console.log(currentProduct, active, newArray)
     return newArray
   }
+
+
+  const timeRef = useRef(0)
+  useEffect(() => {
+    if (timeRef.current) {
+      clearTimeout(timeRef.current)
+    }
+
+    timeRef.current = setTimeout(() => handleNextClick(), 4000)
+
+    return () => clearTimeout(timeRef.current)
+  }, [handleNextClick])
 
   return (
     <>
