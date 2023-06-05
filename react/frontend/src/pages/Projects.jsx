@@ -3,7 +3,11 @@ import { nanoid } from "nanoid";
 import { useState, useEffect, useRef } from "react";
 import "./Projects.css";
 
+
+
+
 function Projects() {
+  const cardWidth = 600;
 
   // book-keeping to store the data
   const [data, setData] = useState([]);
@@ -64,6 +68,7 @@ function Projects() {
   }
 
 
+  // autoplay of carousel cards
   const timeRef = useRef(0)
   useEffect(() => {
     if (timeRef.current) {
@@ -75,23 +80,60 @@ function Projects() {
     return () => clearTimeout(timeRef.current)
   }, [handleNextClick])
 
+  // arrow styles
+  const getArrowStyles = (direction) => ({
+    cursor: "pointer",
+    alignSelf: "center"
+  })
+
+  console.log(getArrowStyles("left"))
+
   return (
     <>
-      <div style={{ display: "flex" }}>
-
-        {/* carousel data*/}
-        {transformedData[currentProduct]}
-        {/* carousel buttons (controlled?) */}
-
+      {/* number of products */}
+      <div>
+        {currentProduct + 1} of {numData}
       </div>
 
 
+      {/* left arrow */}
+      <div style={{ display: "flex" }}>
+        <div onClick={handlePrevClick} style={getArrowStyles("left")}>❰</div>
+        {/*galaxy_hd carousel data*/}
+        <div style={{
+          overflow: "hidden",
+          width: cardWidth,
+        }}>
+          <div
+            className="cards-container"
+            style={{
+              display: "flex",
+              transition: `transform ease-out 0.5s`,
+              width: (cardWidth + 10) * numData,
+              transform: `translate(${-(currentProduct * cardWidth)}px)`
+            }}
+          >
+            {transformedData.map((_, index) => {
+              return (
+                <div
+                  key={nanoid()}
+                  style={{ width: `${cardWidth}px` }}
+                >
+                  {transformedData[index]}
+                </div>
+              )
+            })}
+          </div >
+        </div>
+        {/* right arrow */}
+        <div onClick={handleNextClick} style={getArrowStyles("right")}>❱</div>
+      </div>
+
+      {/* carousel buttons (controlled?) */}
       {/* buttons at the bottom */}
-      <div className="dotsArea">
 
-        {/* left arrow */}
-        <button onClick={handlePrevClick}>{`<`}</button>
-
+      <div className="dotsArea" >
+        {numData > 5 && <button onClick={() => handleDotClick(0)} style={{ justifyContent: "flex-start", marginRight: "auto" }}>first</button>}
         {
           showButtons(currentProduct).map(b => {
             return (
@@ -101,25 +143,8 @@ function Projects() {
             )
           })
         }
-
-        {/* right arrow */}
-        <button onClick={handleNextClick}>{`>`}</button>
-      </div>
-      <div>
-        {currentProduct + 1} of {numData}
-      </div>
-
-
-      {/*
-      <div>
-        {data.map((p, index) => {
-          return (
-            <p key={nanoid()}>{index + 1}: {p.title}</p>
-          )
-        })}
-      </div>
-    */}
-
+        {numData > 5 && <button onClick={() => handleDotClick(numData - 1)} style={{ justifyContent: "flex-end", marginLeft: "auto" }}>last</button>}
+      </div >
     </>
   )
 }
