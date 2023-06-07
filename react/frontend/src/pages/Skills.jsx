@@ -1,22 +1,37 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
+import { getData, storage } from "../database/firebaseConfig"
+import { ProjectImage } from "../components/ProjectImage"
 
 
 function Skills() {
-    const [count, setCount] = useState(0)
+    const [projects, setProjects] = useState([])
 
-    const handleDec = () => setCount(count => count - 1)
-    const handleInc = () => setCount(count => count + 1)
-
+    // to get all projects data
     useEffect(() => {
-        // call increment at 5 seconds interval
-        setTimeout(() => handleInc(), 5000)
-    }, [count])
+        (async function () {
+            try {
+                let data = await getData("projects")
+                setProjects(data)
+            } catch (err) {
+                console.log(`error occured on skills: ${err.message}`)
+            }
+        })()
+    }, [])
 
     return (
-        <div style={{ display: "flex", alignItems: "center" }}>
-            <button onClick={handleDec}>-</button>
-            <div style={{ margin: "2em" }}>{count}</div>
-            <button onClick={handleInc}>+</button>
+        <div>
+            {
+                projects.map((p, id) => {
+                    return (
+                        <div key={id}>
+                            <p>{p.title}</p>
+                            <a href={p.uri}>link</a>
+                            <ProjectImage path={p.displayImg} />
+                            <p>{p.technologies}</p>
+                        </div>
+                    )
+                })
+            }
         </div>
     )
 }
