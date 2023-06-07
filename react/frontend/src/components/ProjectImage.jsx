@@ -1,31 +1,28 @@
+import "./ProjectImage.css"
 import { useState, useEffect } from "react"
-import { storage } from "../database/firebaseConfig"
-import { ref, getDownloadURL } from "firebase/storage"
+import { getImgURL } from "../database/firebaseConfig"
 
 function ProjectImage({ path }) {
     const [imgURL, setImgURL] = useState("")
 
-    async function getImgURL(path) {
-        const storageRef = ref(storage)
-        const imgRef = ref(storageRef, path)
-        const data = await getDownloadURL(imgRef)
-        return data
-    }
+
 
     useEffect(() => {
+        // immediate function invocation
         (async function () {
             try {
                 let data = await getImgURL(path)
                 setImgURL(data)
-                console.log(`imgurl: ${imgURL}`)
             } catch (err) {
                 console.log(`something went wrong in project image: ${err.message}`)
             }
         })()
+
+        // console.log(`imgurl: ${imgURL}`)
     }, [path])
 
     return (
-        <div><img src={imgURL} alt="display-image" /></div>
+        <div style={{ backgroundImage: `url(${imgURL})` }} className="project-images"></div>
     )
 }
 

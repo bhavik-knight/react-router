@@ -4,8 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import "./Projects.css";
 
 
-
-
 function Projects() {
   const cardWidth = 600;
 

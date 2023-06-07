@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 
 // import the firestore object from the module
 import { getFirestore, getDocs, collection } from "firebase/firestore"
-import { getStorage } from "firebase/storage";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 
 // Your web app's Firebase configuration
@@ -51,4 +51,15 @@ const getData = async (pageName) => {
     }
 }
 
-export { db, storage, getData }
+const getImgURL = async (path) => {
+    try {
+        const storageRef = ref(storage)
+        const imgRef = ref(storageRef, path)
+        const data = await getDownloadURL(imgRef)
+        return data
+    } catch (err) {
+        throw err
+    }
+}
+
+export { db, storage, getData, getImgURL }
