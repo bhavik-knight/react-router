@@ -4,9 +4,6 @@ import { getURL } from "../database/firebaseConfig"
 
 function ProjectImage({ path }) {
     const [imgURL, setImgURL] = useState("")
-
-
-
     useEffect(() => {
         // immediate function invocation
         (async function () {
@@ -18,11 +15,11 @@ function ProjectImage({ path }) {
             }
         })()
 
-        // console.log(`imgurl: ${imgURL}`)
     }, [path])
 
     return (
-        <div style={{ backgroundImage: `url(${imgURL})` }} className="project-images"></div>
+        <div style={{ backgroundImage: `url(${imgURL})` }} className="project-images">
+        </div>
     )
 }
 
