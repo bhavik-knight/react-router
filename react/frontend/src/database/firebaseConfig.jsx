@@ -51,7 +51,7 @@ const getData = async (pageName) => {
     }
 }
 
-const getImgURL = async (path) => {
+const getURL = async (path) => {
     try {
         const storageRef = ref(storage)
         const imgRef = ref(storageRef, path)
@@ -62,4 +62,4 @@ const getImgURL = async (path) => {
     }
 }
 
-export { db, storage, getData, getImgURL }
+export { db, storage, getData, getURL }

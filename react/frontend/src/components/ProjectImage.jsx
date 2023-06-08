@@ -1,6 +1,6 @@
 import "./ProjectImage.css"
 import { useState, useEffect } from "react"
-import { getImgURL } from "../database/firebaseConfig"
+import { getURL } from "../database/firebaseConfig"
 
 function ProjectImage({ path }) {
     const [imgURL, setImgURL] = useState("")
@@ -11,7 +11,7 @@ function ProjectImage({ path }) {
         // immediate function invocation
         (async function () {
             try {
-                let data = await getImgURL(path)
+                let data = await getURL(path)
                 setImgURL(data)
             } catch (err) {
                 console.log(`something went wrong in project image: ${err.message}`)

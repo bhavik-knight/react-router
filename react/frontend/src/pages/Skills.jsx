@@ -2,7 +2,6 @@ import { nanoid } from "nanoid"
 import { useRef, useState, useCallback, useEffect } from 'react'
 import { getData, storage } from "../database/firebaseConfig"
 import { ProjectImage } from "../components/ProjectImage"
-import { Carousel } from "react-responsive-carousel"
 
 
 function Skills() {
