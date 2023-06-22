@@ -13,6 +13,7 @@ import { Skills } from "./pages/Skills"
 import { Projects } from "./pages/Projects"
 import { Education } from "./pages/Education"
 import { Experiences } from "./pages/Experiences"
+import { Contact } from "./pages/Contact"
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="projects" element={<Projects />} />
         <Route path="education" element={<Education />} />
         <Route path="experiences" element={<Experiences />} />
+        <Route path="contact" element={<Contact />} />
       </Route>
     )
   )
