@@ -1,23 +1,29 @@
-import { useState, useEffect } from "react"
-import { storage } from "../database/firebaseConfig"
+import { nanoid } from "nanoid"
+import { useState, useEffect, useCallback } from "react"
+import { storage, getData, getURL } from "../database/firebaseConfig"
 import { ref, getDownloadURL } from "firebase/storage"
 import { Document, Page } from "react-pdf"
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
-import 'react-pdf/dist/esm/Page/TextLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css'
 
 
-import { pdfjs } from 'react-pdf';
+import { Worker, Viewer } from "@react-pdf-viewer/core"
+import "@react-pdf-viewer/core/lib/styles/index.css"
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout"
+import { RenderCarousel } from "../components/RenderCarousel"
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.js',
-    import.meta.url,
-).toString();
+
+// import { pdfjs } from 'react-pdf';
+
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//     'pdfjs-dist/build/pdf.worker.min.js',
+//     import.meta.url,
+// ).toString();
 
 function Education() {
-    const [count, setCount] = useState(0)
+    const [certs, setCerts] = useState([])
 
-    const handleDec = () => setCount(count => count - 1)
-    const handleInc = () => setCount(count => count + 1)
+
 
     const getCertURL = async (path) => {
         try {
@@ -31,49 +37,67 @@ function Education() {
     }
 
 
-    // certificates
-    const [certificates, setCertificates] = useState([])
     useEffect(() => {
         (
             async function () {
                 try {
-                    let data = await getCertURL("certificates/harvard/Harvardx_CS50x_Puzzle_Day_2019.pdf")
-                    setCertificates(data)
+                    let data = await getData("certificates")
+                    let certsURL = data[0].path
+                    setCerts(certsURL)
                 } catch (err) {
-                    console.log(`error occured in education: ${err.message}`)
+                    console.log(`error occured in edu / certs: ${err.message}`)
                 }
             }
         )()
+        console.log(`certs$: ${certs}`)
     }, [])
 
-    useEffect(() => {
-        // call increment at 5 seconds interval
-        setTimeout(() => handleInc(), 5000)
-    }, [count])
+    const pdfViwer = useCallback(
+        certs.map(url => {
+            return (
+                <div key={nanoid()} style={{ width: "800px", height: "fit-content" }}>
+                    <Worker key={nanoid()} workerUrl="https://unpkg.com/pdfjs-dist@3.7.107/build/pdf.worker.min.js">
+                        <Viewer
+                            key={nanoid()}
+                            fileUrl={url}
+                        />
+                    </Worker>
+                </div>
+            )
+        }),
+
+        [certs]
+    )
 
     return (
         <>
-            <div style={{ display: "flex", alignItems: "center" }}>
-                <button onClick={handleDec}>-</button>
-                <div style={{ margin: "2em" }}>{count}</div>
-                <button onClick={handleInc}>+</button>
-            </div>
+            {/* certificate - react-pdf-viewer */}
+            <RenderCarousel items={pdfViwer} />
+
+            {/* <div style={{ width: "800px", height: "fit-content" }}>
+                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.7.107/build/pdf.worker.min.js" >
+                    <Viewer fileUrl=
+                        "https://firebasestorage.googleapis.com/v0/b/portfolio-database-9feb8.appspot.com/o/certificates%2Fharvard%2FHarvardx_CS50x_Introduction_to_Computer_Science.pdf?alt=media&token=9870fb56-64c2-4186-b671-3609b2ee40eb"
+                    />
+                </Worker>
+            </div> */}
 
             {/* certificates */}
             {/* <div>
                 <embed
-                    src="./certificates/harvard/Harvardx_CS50x_Puzzle_Day_2019.pdf"
                     style={{ width: "800px", height: "600px" }}
+                    src=
+                    "https://firebasestorage.googleapis.com/v0/b/portfolio-database-9feb8.appspot.com/o/certificates%2Fharvard%2FHarvardx_CS50x_Introduction_to_Computer_Science.pdf?alt=media&token=9870fb56-64c2-4186-b671-3609b2ee40eb"
                 />
             </div> */}
-
-            <div>
+            {/* <div>
                 <Document
-                    file="./certificates/harvard/Harvardx_CS50x_Puzzle_Day_2019.pdf"
+                    file=
+                    "https://firebasestorage.googleapis.com/v0/b/portfolio-database-9feb8.appspot.com/o/certificates%2Fharvard%2FHarvardx_CS50x_Introduction_to_Computer_Science.pdf?alt=media&token=9870fb56-64c2-4186-b671-3609b2ee40eb"
                 >
                     <Page pageNumber={1} width={300} height={200} />
                 </Document>
-            </div>
+            </div> */}
         </>
     )
 }

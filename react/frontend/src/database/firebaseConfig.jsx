@@ -46,8 +46,8 @@ const getData = async (pageName) => {
 const getURL = async (path) => {
     try {
         const storageRef = ref(storage)
-        const imgRef = ref(storageRef, path)
-        const data = await getDownloadURL(imgRef)
+        const dataRef = ref(storageRef, path)
+        const data = await getDownloadURL(dataRef)
         return data
     } catch (err) {
         throw err
