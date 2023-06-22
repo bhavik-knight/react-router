@@ -22,14 +22,14 @@ function Contact() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        (async function () {
-            try {
-                let data = await send()
-                console.log(`email sent ${JSON.stringify(data)}`)
-            } catch (err) {
-                console.log(`email sent response: ${err.message}`)
-            }
-        })()
+        // (async function () {
+        //     try {
+        //         let data = await send()
+        //         console.log(`email sent ${JSON.stringify(data)}`)
+        //     } catch (err) {
+        //         console.log(`email sent response: ${err.message}`)
+        //     }
+        // })()
 
         console.log(`handiling was done before email sent ${form.current.message.name} `)
     }

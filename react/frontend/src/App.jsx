@@ -14,6 +14,7 @@ import { Projects } from "./pages/Projects"
 import { Education } from "./pages/Education"
 import { Experiences } from "./pages/Experiences"
 import { Contact } from "./pages/Contact"
+import { FormikForm } from "./pages/FormikForm"
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="education" element={<Education />} />
         <Route path="experiences" element={<Experiences />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="form" element={<FormikForm />} />
       </Route>
     )
   )
