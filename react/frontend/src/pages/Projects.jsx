@@ -84,12 +84,36 @@ function Projects() {
     alignSelf: "center"
   })
 
-  console.log(getArrowStyles("left"))
+  // console.log(getArrowStyles("left"))
+
+  const [autoplay, setAutoplay] = useState(true)
+  function handleAutoplay() {
+    setAutoplay(prevAutoplay => !prevAutoplay)
+  }
+
+  // start stop autoplay with play pause button
+  useEffect(() => {
+    if (autoplay) {
+      console.log(`start autoplay`)
+    } else {
+      console.log(`stop autoplay`)
+      if (timeRef.current) {
+        clearTimeout(timeRef.current)
+      }
+    }
+  }, [autoplay])
+
+  // start stop autoplay with mouse over / out
+  useEffect(() => {
+
+  }, [autoplay])
+
 
   return (
     <>
       {/* number of products */}
-      <div>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <button onClick={handleAutoplay}>{autoplay ? "pause" : "play"}</button>
         {currentProduct + 1} of {numData}
       </div>
 
